@@ -55,6 +55,8 @@ describe('SimpleWalletAPI', () => {
       paymasterAndData: '0xaaaaaa',
       signature: '0xbbbb'
     }
+
+    //verify 
     const hash = await api.getRequestId(userOp)
     const epHash = await entryPoint.getRequestId(userOp)
     expect(hash).to.equal(epHash)

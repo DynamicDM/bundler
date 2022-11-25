@@ -31,6 +31,13 @@ export class BundlerServer {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.app.post('/rpc', this.rpc.bind(this))
 
+
+    // code add - parksy 
+    this.app.get('/test/:id', this.test.bind(this))
+    this.app.post('/ttest', this.ttest.bind(this))
+    // code add - parksy 
+
+
     this.httpServer = this.app.listen(this.config.port)
     this.startingPromise = this._preflightCheck()
   }
@@ -67,6 +74,58 @@ export class BundlerServer {
   intro (req: Request, res: Response): void {
     res.send(`Account-Abstraction Bundler v.${erc4337RuntimeVersion}. please use "/rpc"`)
   }
+
+  // code add - parksy 
+  async test (req: Request, res: Response): Promise<void> {
+    const id: string= req.params.id
+
+    let sendData: string = 'sent : ' + id;
+    try {
+      //const result = await this.handleMethod(method, params)
+      console.log(sendData)
+      res.send(sendData)
+
+    } catch (err: any) {
+      const error = {
+        message: err.message,
+        data: err.data,
+        code: err.code
+      }
+
+      console.log('failed: ', sendData)
+      res.send(sendData)
+    }
+  }
+
+  async ttest (req: Request, res: Response): Promise<void> {
+    const {
+      method,
+      params,
+      jsonrpc,
+      id,
+      title,
+      content
+    } = req.body
+
+    let sendData: string = 'sent : ' + method + ' - ' + params + ' - ' + jsonrpc + ' - ' + id + ' - ' + title  + ' - ' + content;
+    try {
+      //const result = await this.handleMethod(method, params)
+      console.log(sendData)
+      console.log('req.body : ', req.body) 
+      res.send(sendData)
+
+    } catch (err: any) {
+      const error = {
+        message: err.message,
+        data: err.data,
+        code: err.code
+      }
+
+      console.log('failed: ', sendData)
+      res.send(sendData)
+    }
+  }
+  // code add - parksy 
 
   async rpc (req: Request, res: Response): Promise<void> {
     const {
